@@ -26,3 +26,5 @@ echo 02 0808 > /sys/kernel/debug/asoc/rockchip_rt5660/codec:rt5660.1-001c/codec_
 echo 66 0c00 > /sys/kernel/debug/asoc/rockchip_rt5660/codec:rt5660.1-001c/codec_reg
 echo 4e 0480 > /sys/kernel/debug/asoc/rockchip_rt5660/codec:rt5660.1-001c/codec_reg
 echo 51 0480 > /sys/kernel/debug/asoc/rockchip_rt5660/codec:rt5660.1-001c/codec_reg
+#Performance
+echo performance | tee $(find /sys/ -name *governor)

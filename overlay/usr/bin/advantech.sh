@@ -28,3 +28,5 @@ echo 4e 0480 > /sys/kernel/debug/asoc/rockchip_rt5660/codec:rt5660.1-001c/codec_
 echo 51 0480 > /sys/kernel/debug/asoc/rockchip_rt5660/codec:rt5660.1-001c/codec_reg
 #Performance
 echo performance | tee $(find /sys/ -name *governor)
+#Disables hung_task_timeout_secs message
+echo 0 > /proc/sys/kernel/hung_task_timeout_secs

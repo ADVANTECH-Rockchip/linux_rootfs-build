@@ -113,7 +113,7 @@ sed -i 's/# zh_TW.EUC-TW EUC-TW/zh_TW.EUC-TW EUC-TW/g' /etc/locale.gen
 sed -i 's/# zh_TW.UTF-8 UTF-8/zh_TW.UTF-8 UTF-8/g' /etc/locale.gen
 locale-gen
 echo -e "root\nroot\n" | passwd root
-apt-get install -y git dosfstools stress udhcpc bonnie++
+apt-get install -y git dosfstools stress udhcpc bonnie++ i2c-tools
 #git clone https://github.com/ADVANTECH-Corp/advtest-burnin.git /root/advtest -b dms_sa53
 
 #---------------power management --------------

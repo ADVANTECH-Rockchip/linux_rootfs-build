@@ -148,7 +148,7 @@ apt-get update
 apt-get install -f -y x11proto-dev=2018.4-4 libxcb-xf86dri0-dev:$ARCH qtmultimedia5-examples:$ARCH
 
 #---------update chromium-----
-yes|apt-get install chromium -f -y
+no|apt-get install chromium -f -y
 cp -f /packages/others/chromium/etc/chromium.d/default-flags /etc/chromium.d/
 
 #---------MPV---------

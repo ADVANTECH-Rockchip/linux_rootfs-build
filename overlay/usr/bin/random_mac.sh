@@ -11,7 +11,7 @@ function gen_2byte(){
 function gen_MACAddr(){
 	
 	
-for (( c = 1; c<= 3; c++ ))
+for (( c = 1; c<= 2; c++ ))
 do
 	tmp=$(gen_2byte)
 	MACAddr=$MACAddr":"$tmp

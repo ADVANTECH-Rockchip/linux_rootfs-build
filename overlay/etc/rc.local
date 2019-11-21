@@ -11,5 +11,7 @@
 #
 # By default this script does nothing.
 
+# Generate the SSH keys if non-existent
+ssh-keygen -A
 ./usr/bin/advantech.sh
 exit 0

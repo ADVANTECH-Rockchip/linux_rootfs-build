@@ -1,0 +1,10 @@
+prefix=/media/linaro/7f51ef3c-85fa-4c23-976e-92f4144ce5a6/workspace/fakke_root
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: tslib
+Description: Touchscreen Access Library
+Version: 1.21+
+Libs: -L${libdir} -lts
+Cflags: -I${includedir}

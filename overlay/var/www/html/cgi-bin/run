@@ -1,0 +1,159 @@
+#!/bin/bash
+
+. /etc/profile
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+INTERFACE="enp1s0"
+IPAddr="127.0.0.1"
+
+function getLocalIP(){
+	IPAddr=$(ifconfig $INTERFACE | grep "inet " | awk '{ print $2'})
+	if [[ "$IPAddr" == "" ]]; then
+		IPAddr="127.0.0.1"
+	fi
+	echo "IP Address: "$IPAddr'<br>'
+
+}
+
+function landscape()
+{
+
+cat << EOF > /etc/X11/xorg.conf.d/20-modesetting.conf
+Section "Device"
+    Identifier  "Rockchip Graphics"
+    Driver      "modesetting"
+    Option      "AccelMethod"    "exa"
+#    Option      "AccelMethod"    "glamor"
+    Option      "DRI"            "2"
+    Option      "FlipFB"         "always"
+EndSection
+
+Section	"Screen"
+    Identifier	"Default Screen"
+    Device	"Rockchip Graphics"
+    Monitor	"Default Monitor"
+EndSection
+
+### Valid values for rotation are "normal", "left", "right"
+Section	"Monitor"
+    Identifier	"Default Monitor"
+    Option	"Rotate" "right"
+EndSection
+
+Section "InputClass"
+    Identifier      "calibration"
+    MatchProduct    "hy46xx_ts"
+    Option          "TransformationMatrix"  "0 1 0 -1 0 1 0 0 1"
+    EndSection
+EOF
+
+}
+
+
+function portrait()
+{ 
+
+cat << EOF >  /etc/X11/xorg.conf.d/20-modesetting.conf
+Section "Device"
+    Identifier  "Rockchip Graphics"
+    Driver      "modesetting"
+    Option      "AccelMethod"    "exa"
+#    Option      "AccelMethod"    "glamor"
+    Option      "DRI"            "2"
+    Option      "FlipFB"         "always"
+EndSection
+
+Section	"Screen"
+    Identifier	"Default Screen"
+    Device	"Rockchip Graphics"
+    Monitor	"Default Monitor"
+EndSection
+
+### Valid values for rotation are "normal", "left", "right"
+Section	"Monitor"
+    Identifier	"Default Monitor"
+    Option	"Rotate" "normal"
+EndSection
+
+EOF
+
+}
+					
+
+function parse_query_string()
+{
+
+saveIFS=$IFS
+IFS='=&'
+parm=($QUERY_STRING)
+IFS=$saveIFS
+
+
+	for ((i=0; i<${#parm[@]}; i+=2))
+	do
+		declare var_${parm[i]}=${parm[i+1]}
+	done
+
+}
+
+
+function button()
+{
+echo '<hr>'
+echo '<button><a href="http://'$IPAddr'/cgi-bin/run?CMD=portrait" class="btn btn-default">portrait</a></button>'
+echo '<button><a href="http://'$IPAddr'/cgi-bin/run?CMD=landscape" class="btn btn-default">landscape</a></button>'
+echo '<hr>'
+
+}
+
+function main()
+{
+
+saveIFS=$IFS
+IFS='=&'
+parm=($QUERY_STRING)
+IFS=$saveIFS
+
+
+for ((i=0; i<${#parm[@]}; i+=2))
+do
+	declare var_${parm[i]}=${parm[i+1]}
+done
+
+
+echo "Content-type: text/html"
+echo ""
+
+echo '<html>'
+echo '<head>'
+echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">'
+echo '<title>DMS-SA51</title>'
+echo '</head>'
+echo '<body>'
+echo '<H3>'
+echo 'DMS-SA51<br>'
+echo '</H3>'
+	getLocalIP
+
+if [[ "$var_CMD" == "portrait" ]]; then
+	echo 'Set DISPLAY to Portrait mode<br>'
+	portrait
+	sudo /bin/bash -c "/bin/systemctl reboot" > /dev/null &	
+elif [[ "$var_CMD" == "landscape" ]]; then
+	echo 'Set DISPLAY to Landscape mode<br>'
+	landscape
+	sudo /bin/bash -c "/bin/systemctl reboot" > /dev/null &		
+elif [[ "$var_CMD" != "" ]]; then
+	echo 'Run shell cmd: '$var_CMD'<br>' 
+	sudo /bin/bash -c "$var_CMD" > /dev/null &
+fi
+
+button
+
+echo '</body>'
+echo '</html>'
+
+exit 0
+
+}
+
+main $@

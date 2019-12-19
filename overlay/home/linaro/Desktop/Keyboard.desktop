@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Keyboard
+Exec=/usr/bin/xvkbd
+Type=Application
+

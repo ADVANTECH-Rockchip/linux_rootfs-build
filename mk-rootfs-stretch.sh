@@ -115,6 +115,9 @@ locale-gen
 echo -e "root\nroot\n" | passwd root
 apt-get install -y git dosfstools stress udhcpc bonnie++ i2c-tools libiperf0 iperf3
 apt-get install -y xinput mini-httpd xvkbd
+#
+wget http://ftp.us.debian.org/debian/pool/main/m/memtester/memtester_4.3.0-4+b1_arm64.deb -O /tmp/memtester_4.3.0-4+b1_arm64.deb && dpkg -i /tmp/memtester_4.3.0-4+b1_arm64.deb && rm -f /tmp/memtester_4.3.0-4+b1_arm64.deb
+#
 #git clone https://github.com/ADVANTECH-Corp/advtest-burnin.git /root/advtest -b dms_sa53
 
 #---------------power management --------------
@@ -184,6 +187,9 @@ rm /lib/systemd/system/wpa_supplicant@.service
 
 #---------------Clean--------------
 rm -rf /var/lib/apt/lists/*
+if [ -f "/usr/local/bin/memtester" ] ; then
+	rm -f /usr/local/bin/memtester
+fi
 
 EOF
 
